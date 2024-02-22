@@ -1,0 +1,24 @@
+# Define the addresses to ping and trace
+$addresses = @("bdportal.global.bdx.com", "bdportal.global.bdx.com")
+
+# Specify the output file name
+$outputFile = "PingAndTracerouteResults.txt"
+
+# Clear the output file if it already exists
+if (Test-Path $outputFile) {
+    Remove-Item $outputFile
+}
+
+# Loop through each address
+foreach ($address in $addresses) {
+    # Ping the address
+    Write-Output "Pinging $address..." | Out-File $outputFile -Append
+    Test-Connection $address -Count 4 | Out-File $outputFile -Append
+
+    # Perform a traceroute to the address
+    Write-Output "Traceroute to $address..." | Out-File $outputFile -Append
+    tracert $address | Out-File $outputFile -Append
+}
+
+# Notify completion
+Write-Output "Ping and traceroute operations completed. Results are saved in $outputFile."
